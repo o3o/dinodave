@@ -272,11 +272,11 @@ int daveGetDebug();
  * Create a daveInterface structure.
  *
  * Params:
- *  nfd = a _daveOSserialType
+ *  nfd = A _daveOSserialType
  *  nname = Interface name
  *  localMPI = The address used by your computer/adapter (only meaningful for MPI and PPI)
- *  protocol = a constant specifying the protocol to be used on this interface
- *  speed = a constant specifying the speed to be used on this interface. (only meaningful for MPI and Profibus)
+ *  protocol = A constant specifying the protocol to be used on this interface
+ *  speed = A constant specifying the speed to be used on this interface. (only meaningful for MPI and Profibus)
  */
 daveInterface* daveNewInterface(_daveOSserialType nfd, const(char)* nname, int localMPI, int protocol, int speed);
 
@@ -285,10 +285,10 @@ daveInterface* daveNewInterface(_daveOSserialType nfd, const(char)* nname, int l
  * daveInterface and PLC's MPI address.
  *
  * Params:
- *  di = a daveInterface
- *  MPI = the address of the PLC (only meaningful for MPI and PPI).
+ *  di = A daveInterface
+ *  MPI = The address of the PLC (only meaningful for MPI and PPI).
  *  rack = The rack the CPU is mounted in (normally 0, only meaningful for ISO over TCP).
- *  slot =The slot number the CPU is mounted in (normally 2, only meaningful for ISO over TCP)
+ *  slot = The slot number the CPU is mounted in (normally 2, only meaningful for ISO over TCP)
  */
 daveConnection* daveNewConnection(daveInterface* di, int MPI, int rack, int slot);
 int daveGetResponse(daveConnection* dc);
