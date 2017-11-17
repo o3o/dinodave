@@ -20,7 +20,7 @@ void main(string[] args) {
          "l", "length in short", &len
          );
    if (opt.helpWanted) {
-      defaultGetoptPrinter("Read short frm Siemens S7",
+      defaultGetoptPrinter("Read short from Siemens S7",
             opt.options);
    } else {
       try {

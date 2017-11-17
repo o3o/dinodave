@@ -109,7 +109,7 @@ class IsoTcp: IPlc {
          }
 
       } catch(Exception e) {
-         throw new NodaveException("Generic exception");
+         throw new NodaveException("NoDave generic exception:" ~ e.msg);
       }
    }
 

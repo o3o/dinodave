@@ -7,3 +7,4 @@ dub.selections.json
 examples/integer/integer
 examples/integer/libnodave.dll
 examples/date_time/date_time
+examples/read_int16/read_int16
