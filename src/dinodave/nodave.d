@@ -1,6 +1,6 @@
 /**
-* This module contains bindings to types and functions from the nodave C header <nodavesimple.h>.
-*/
+ * This module contains bindings to types and functions from the nodave C header <nodavesimple.h>.
+ */
 
 module dinodave.nodave;
 
@@ -54,38 +54,38 @@ struct PDU {
 }
 
 /**
-* A structure representing the physical connection to a PLC or a network of PLCs (e.g. like MPI).
-* daveInterface stores all those properties that are common to a network of PLCs:
-* - The local address used by your computer.
-* - The speed used in this network.
-* - The protocol type used in this network.
-* - A name which is used when printing out debug messages.
-*
-* The structure daveInterface is created and initialized by daveNewInterface:
-*
-* --------------------
-* daveInterface* di;
-* di = daveNewInterface(fds, "IF1", localMPI, daveProtoXXX, daveSpeedYYY);
-* --------------------
-*
-* or in D
-* --------------------
-* auto sock = new TcpSocket(new InternetAddress(ip, to!(ushort)(port)));
-* fds.wfd = fds.rfd = sock.handle;
-* daveInterface* di = daveNewInterface(fds, "IF1", 0, daveProtoISOTCP, daveSpeed9k);
-* --------------------
-*/
+ * A structure representing the physical connection to a PLC or a network of PLCs (e.g. like MPI).
+ * daveInterface stores all those properties that are common to a network of PLCs:
+ * - The local address used by your computer.
+ * - The speed used in this network.
+ * - The protocol type used in this network.
+ * - A name which is used when printing out debug messages.
+ *
+ * The structure daveInterface is created and initialized by daveNewInterface:
+ *
+ * --------------------
+ * daveInterface* di;
+ * di = daveNewInterface(fds, "IF1", localMPI, daveProtoXXX, daveSpeedYYY);
+ * --------------------
+ *
+ * or in D
+ * --------------------
+ * auto sock = new TcpSocket(new InternetAddress(ip, to!(ushort)(port)));
+ * fds.wfd = fds.rfd = sock.handle;
+ * daveInterface* di = daveNewInterface(fds, "IF1", 0, daveProtoISOTCP, daveSpeed9k);
+ * --------------------
+ */
 struct _daveInterface {
    int _timeout;
 }
 
 /**
-* A structure representing the physical connection to a single PLC.
-* daveConnection stores all properties that are unique to a single PLC:
-* - The MPI address of this PLC.
-* - The rack the PLC is in.
-* - The slot the PLC is in.
-*/
+ * A structure representing the physical connection to a single PLC.
+ * daveConnection stores all properties that are unique to a single PLC:
+ * - The MPI address of this PLC.
+ * - The rack the PLC is in.
+ * - The slot the PLC is in.
+ */
 struct _daveConnection {
    int AnswLen;
    ubyte* resultPointer;
@@ -177,8 +177,8 @@ int daveReadPLCTime(daveConnection* dc);
 // ---------
 
 /**
-* Get time in seconds from current read position
-*/
+ * Get time in seconds from current read position
+ */
 float daveGetSeconds(daveConnection* dc);
 
 /**

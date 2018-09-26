@@ -238,12 +238,12 @@ class IsoTcp : IPlc {
       }
 
       getU8(); //???
-      int year = getU8().fromBCD() * 100 + getU8().fromBCD();
-      int month = fromBCD(getU8());
-      int day = getU8().fromBCD;
-      int hour = getU8().fromBCD;
-      int minute = getU8().fromBCD;
-      int second = getU8().fromBCD;
+      immutable(int) year = getU8().fromBCD() * 100 + getU8().fromBCD();
+      immutable(int) month = fromBCD(getU8());
+      immutable(int) day = getU8().fromBCD;
+      immutable(int) hour = getU8().fromBCD;
+      immutable(int) minute = getU8().fromBCD;
+      immutable(int) second = getU8().fromBCD;
       return DateTime(year, month, day, hour, minute, second);
    }
 
