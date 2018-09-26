@@ -17,7 +17,7 @@ import dinodave.helper;
 * Representing the physical connection to a PLC
 */
 interface IPlc {
-   void openConnection(int slot = 2);
+   void openConnection(int slot);
    void closeConnection();
    /**
    * Reads a sequence of bytes from PLC memory.
@@ -88,7 +88,7 @@ class IsoTcp: IPlc {
 
    private daveConnection* dc;
    private _daveOSserialType fds;
-   void openConnection(int slot = 2) {
+   void openConnection(int slot) {
       try {
          auto sock = new TcpSocket(new InternetAddress(ip, to!(ushort)(port)));
 
@@ -252,4 +252,3 @@ daveConnection* createConnection(in string ip, in int port = 102) {
       throw new NodaveException("Generic exception");
    }
 }
-

@@ -14,12 +14,12 @@ import dinodave;
 @UnitTest
 @HiddenTest
 void set_bit_should_work() {
-   enum string IP = "192.168.221.102";
+   enum string IP = "192.168.221.64";
    enum DB = 23;
    enum ADDR = 200;
    try {
       auto s7 = new IsoTcp(IP);
-      s7.openConnection();
+      s7.openConnection(0);
       writeln("opened");
       scope(exit) s7.closeConnection();
       ubyte[] buf = [0, 0];
@@ -51,7 +51,7 @@ void testReadPLCTime() {
    enum ADDR = 200;
    try {
       auto s7 = new IsoTcp(IP);
-      s7.openConnection();
+      s7.openConnection(0);
       scope(exit) s7.closeConnection();
 
       int v = s7.readPLCTime();

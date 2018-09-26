@@ -5,11 +5,11 @@ import dinodave;
 
 enum DB = 11;
 void main(string[] args) {
-   enum string IP = "192.168.221.102";
+   enum string IP = "192.168.221.64";
    writeln("use ip:", IP);
    try {
       auto s7 = new IsoTcp(IP);
-      s7.openConnection();
+      s7.openConnection(0);
       writeln("opened");
 
       scope(exit) s7.closeConnection();

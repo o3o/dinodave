@@ -45,7 +45,7 @@ void main(string[] args) {
    enum DB = 11;
    try {
       auto s7 = new IsoTcp(IP);
-      s7.openConnection();
+      s7.openConnection(0);
       scope(exit) s7.closeConnection();
 
       int start = 160;
@@ -63,30 +63,10 @@ void main(string[] args) {
 
 See also directory `examples/` and [wiki](https://github.com/o3o/dinodave/wiki/).
 
-## Compiling and running code examples
-
-The code examples in `examples` directory are simple applications that perform simple PLC operations
-
-For some examples (`float` and `read_write`) dub includes subpackage, so to compile:
-
-```
-$ make s=float
-```
-or
-```
-$ dub build dinodave:float
-````
-
-for the other examples:
-```
-$ cd examples/x
-$ make
-```
-
 
 ## Install libnodave
 
-```
+```sh
 $ git clone git@github.com:netdata/libnodave.git
 $ cd libnodave
 $ make

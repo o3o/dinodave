@@ -15,8 +15,9 @@ void main(string[] args) {
    try {
       writeln("use ip ", ip);
 
-      auto s7 = new IsoTcp(ip);
-      s7.openConnection();
+      IPlc s7 = new IsoTcp(ip);
+      enum int SLOT = 0;
+      s7.openConnection(0);
       scope(exit) s7.closeConnection();
 
       float f = 19.64;
