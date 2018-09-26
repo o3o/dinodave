@@ -5,6 +5,10 @@
 
 A simple D binding to [LIBNODAVE, a free library to communicate to Siemens S7 PLCs](https://github.com/netdata/libnodave)
 
+> Note that project's development happens on the [GitLab](https://gitlab.com/o3o/dinodave).
+> GitHub repository is a mirror, it might *not* always be up-to-date.
+
+
 ## Compiling
 With dub:
 
