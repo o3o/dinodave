@@ -75,7 +75,7 @@ interface IPlc {
    int readPLCTime();
 }
 
-class IsoTcp: IPlc {
+class IsoTcp : IPlc {
    private immutable(string) ip;
    private immutable(int) port;
    this(in string ipAddress, in int port = 102) {
@@ -105,10 +105,11 @@ class IsoTcp: IPlc {
                throw new NodaveException("Couldn't connect to PLC with ip " ~ ip);
             }
          } else {
-            throw new NodaveException("Couldn't open TCP port. Please make sure a CP is connected and the IP address is ok.");
+            throw new NodaveException(
+                  "Couldn't open TCP port. Please make sure a CP is connected and the IP address is ok.");
          }
 
-      } catch(Exception e) {
+      } catch (Exception e) {
          throw new NodaveException("NoDave generic exception:" ~ e.msg);
       }
    }
@@ -138,22 +139,61 @@ class IsoTcp: IPlc {
       }
    }
 
-   byte getS8() { return to!byte(daveGetS8(dc)); }
-   ubyte getU8() { return to!ubyte(daveGetU8(dc)); }
-   short getS16() { return to!short(daveGetS16(dc)); }
-   ushort getU16() { return to!ushort(daveGetU16(dc)); }
-   int getS32() { return daveGetS32(dc); }
-   uint getU32() { return daveGetU32(dc); }
+   byte getS8() {
+      return to!byte(daveGetS8(dc));
+   }
 
-   float getFloat() { return daveGetFloat(dc); }
+   ubyte getU8() {
+      return to!ubyte(daveGetU8(dc));
+   }
 
-   byte getS8At(int position) { return to!byte(daveGetS8At(dc, position)); }
-   ubyte getU8At(int position) { return to!ubyte(daveGetU8At(dc, position)); }
-   short getS16At(int position) { return to!short(daveGetS16At(dc, position)); }
-   ushort getU16At(int position) { return to!ushort(daveGetU16At(dc, position)); }
-   int getS32At(int position) { return daveGetS32At(dc, position); }
-   uint getU32At(int position) { return to!uint(daveGetU32At(dc, position)); }
-   float getFloatAt(int position) { return daveGetFloatAt(dc, position); }
+   short getS16() {
+      return to!short(daveGetS16(dc));
+   }
+
+   ushort getU16() {
+      return to!ushort(daveGetU16(dc));
+   }
+
+   int getS32() {
+      return daveGetS32(dc);
+   }
+
+   uint getU32() {
+      return daveGetU32(dc);
+   }
+
+   float getFloat() {
+      return daveGetFloat(dc);
+   }
+
+   byte getS8At(int position) {
+      return to!byte(daveGetS8At(dc, position));
+   }
+
+   ubyte getU8At(int position) {
+      return to!ubyte(daveGetU8At(dc, position));
+   }
+
+   short getS16At(int position) {
+      return to!short(daveGetS16At(dc, position));
+   }
+
+   ushort getU16At(int position) {
+      return to!ushort(daveGetU16At(dc, position));
+   }
+
+   int getS32At(int position) {
+      return daveGetS32At(dc, position);
+   }
+
+   uint getU32At(int position) {
+      return to!uint(daveGetU32At(dc, position));
+   }
+
+   float getFloatAt(int position) {
+      return daveGetFloatAt(dc, position);
+   }
 
    void setBit(in int DB, in int byteAddress, in int bitAddress) {
       int res = daveSetBit(dc, daveDB, DB, byteAddress, bitAddress);
@@ -215,7 +255,7 @@ class IsoTcp: IPlc {
 /**
 * NoDave exception
 */
-class NodaveException: Exception {
+class NodaveException : Exception {
    this(int errNo) {
       string message = strerror(errNo);
       this(message);
@@ -245,10 +285,11 @@ daveConnection* createConnection(in string ip, in int port = 102) {
          }
          return dc;
       } else {
-         throw new NodaveException("Couldn't open TCP port. Please make sure a CP is connected and the IP address is ok.");
+         throw new NodaveException(
+               "Couldn't open TCP port. Please make sure a CP is connected and the IP address is ok.");
       }
 
-   } catch(Exception e) {
+   } catch (Exception e) {
       throw new NodaveException("Generic exception");
    }
 }

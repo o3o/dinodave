@@ -8,7 +8,7 @@ import std.stdio;
 import core.stdc.stdio;
 import core.stdc.stdlib;
 
-enum daveProtoISOTCP = 122;   /** ISO over TCP */
+enum daveProtoISOTCP = 122; /** ISO over TCP */
 
 /** ProfiBus/MPI speed constants to be used with newInterface */
 enum daveSpeed9k = 0;
@@ -23,14 +23,14 @@ enum daveP = 0x80;
 enum daveInputs = 0x81;
 enum daveOutputs = 0x82;
 enum daveFlags = 0x83;
-enum daveDB = 0x84;  /** Data blocks */
-enum daveDI = 0x85;  /** Instance data blocks */
-enum daveLocal = 0x86;  /* not tested */
-enum daveV = 0x87;   /* don't know what it is */
-enum daveCounter = 28;  /** S7 counters */
+enum daveDB = 0x84; /** Data blocks */
+enum daveDI = 0x85; /** Instance data blocks */
+enum daveLocal = 0x86; /* not tested */
+enum daveV = 0x87; /* don't know what it is */
+enum daveCounter = 28; /** S7 counters */
 enum daveTimer = 29; /** S7 timers */
-enum daveCounter200 = 30;  /* IEC counters (200 family) */
-enum daveTimer200 = 31;    /* IEC timers (200 family) */
+enum daveCounter200 = 30; /* IEC counters (200 family) */
+enum daveTimer200 = 31; /* IEC timers (200 family) */
 
 extern (C):
 
@@ -176,7 +176,6 @@ int daveWriteBytes(daveConnection* dc, int area, int DB, int start, int len, voi
 int daveReadPLCTime(daveConnection* dc);
 // ---------
 
-
 /**
 * Get time in seconds from current read position
 */
@@ -237,7 +236,8 @@ void daveFreeResults(daveResultSet* rl);
 void daveAddBitVarToReadRequest(PDU* p, int area, int DBnum, int start, int byteCount);
 void davePrepareWriteRequest(daveConnection* dc, PDU* p);
 void daveAddVarToWriteRequest(PDU* p, int area, int DBnum, int start, int bytes, void* buffer);
-void daveAddBitVarToWriteRequest(PDU* p, int area, int DBnum, int start, int byteCount, void* buffer);
+void daveAddBitVarToWriteRequest(PDU* p, int area, int DBnum, int start,
+      int byteCount, void* buffer);
 int daveExecWriteRequest(daveConnection* dc, PDU* p, daveResultSet* rl);
 int daveInitAdapter(daveInterface* di);
 int daveConnectPLC(daveConnection* dc);
@@ -278,7 +278,8 @@ int daveGetDebug();
  *  protocol = A constant specifying the protocol to be used on this interface
  *  speed = A constant specifying the speed to be used on this interface. (only meaningful for MPI and Profibus)
  */
-daveInterface* daveNewInterface(_daveOSserialType nfd, const(char)* nname, int localMPI, int protocol, int speed);
+daveInterface* daveNewInterface(_daveOSserialType nfd, const(char)* nname,
+      int localMPI, int protocol, int speed);
 
 /**
  * Setup a new connection structure using an initialized

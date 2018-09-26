@@ -8,3 +8,7 @@ examples/integer/integer
 examples/integer/libnodave.dll
 examples/date_time/date_time
 examples/read_int16/read_int16
+examples/float/float
+examples/float/libnodave.dll
+examples/read_write/libnodave.dll
+examples/read_write/read_write
