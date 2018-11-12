@@ -5,11 +5,25 @@ import dinodave;
 
 enum DB = 11;
 void main(string[] args) {
+   import std.conv : to;
    enum string IP = "192.168.221.64";
-   writeln("use ip:", IP);
+   string ip = IP;
+   enum int SLOT = 0;
+   int slot = SLOT;
+   writefln("%( %s %)", args);
+
+
+   if (args.length > 1) {
+      ip = args[1];
+   }
+   if (args.length > 2) {
+      slot = args[2].to!int;
+   }
    try {
+      writeln("use ip:", ip);
+      writeln("use slot:", slot);
       auto s7 = new IsoTcp(IP);
-      s7.openConnection(0);
+      s7.openConnection(slot);
       writeln("opened");
 
       scope(exit) s7.closeConnection();
