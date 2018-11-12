@@ -8,6 +8,13 @@ import std.exception;
 
 import dinodave.nodave;
 
+/**
+ * Put one byte into buffer.
+ *
+ * Params:
+ *  buffer = buffer in which put the byte
+ *  value = Byte value
+ */
 void put8(ubyte[] buffer, in int value) {
    davePut8(buffer.ptr, value);
 }
@@ -53,9 +60,10 @@ ubyte fromBCD(ubyte i) {
 }
 
 /**
-* Get error code description
+* Get error code description.
 *
-* Params:  code = error code
+* Params:
+*  code = error code
 *
 *
 * Returns: description of error

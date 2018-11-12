@@ -1,7 +1,6 @@
 /**
-*
-* This module defines interfaces and classes that wrap nodave functios and procedures.
-*/
+ * This module defines interfaces and classes that wrap nodave functios and procedures.
+ */
 module dinodave.plc;
 
 import std.conv;
@@ -14,25 +13,25 @@ import dinodave.nodave;
 import dinodave.helper;
 
 /**
-* Representing the physical connection to a PLC
-*/
+ * Representing the physical connection to a PLC.
+ */
 interface IPlc {
    void openConnection(int slot);
    void closeConnection();
    /**
-   * Reads a sequence of bytes from PLC memory.
-   *
-   * Params:
-   *  DB = The number of a data block
-   *  start = The address of the first byte in the block.
-   *  length = The number of bytes to read.
-   *
-   *
-   * Returns: The function returns 0 on success.
-   * Nonzero return codes may be passed to daveStrerror() to get a textual explanation of what happened.
-   * Generally, positive error codes represent errors reported by the PLC,
-   * while negative ones represent errors detected by LIBNODAVE, e.g. no response from the PLC.
-   */
+    * Reads a sequence of bytes from PLC memory.
+    *
+    * Params:
+    *  DB = The number of a data block
+    *  start = The address of the first byte in the block.
+    *  length = The number of bytes to read.
+    *
+    *
+    * Returns: The function returns 0 on success.
+    * Nonzero return codes may be passed to daveStrerror() to get a textual explanation of what happened.
+    * Generally, positive error codes represent errors reported by the PLC,
+    * while negative ones represent errors detected by LIBNODAVE, e.g. no response from the PLC.
+    */
    void readBytes(in int DB, in int start, in int length);
    ///
    byte getS8();
@@ -253,8 +252,8 @@ class IsoTcp : IPlc {
 }
 
 /**
-* NoDave exception
-*/
+ * NoDave exception
+ */
 class NodaveException : Exception {
    this(int errNo) {
       string message = strerror(errNo);
@@ -266,6 +265,17 @@ class NodaveException : Exception {
    }
 }
 
+/**
+ * Creates new daveConnection.
+ *
+ * `daveConnection` representing the physical connection to a single PLC.
+ * `daveConnection` stores all properties that are unique to a single PLC:
+ * $(UL
+ * $(LI The MPI address of this PLC)
+ * $(LI The rack the PLC is in.)
+ * $(LI The slot the PLC is in.)
+ * )
+ */
 daveConnection* createConnection(in string ip, in int port = 102) {
    daveConnection* dc;
    try {

@@ -1,7 +1,6 @@
 /**
  * This module contains bindings to types and functions from the nodave C header <nodavesimple.h>.
  */
-
 module dinodave.nodave;
 
 import std.stdio;
@@ -171,10 +170,21 @@ int daveClrBit(daveConnection* dc, int area, int DB, int byteAdr, int bitAdr);
  *
  */
 int daveReadBytes(daveConnection* dc, int area, int DB, int start, int len, void* buffer);
+
+/**
+ * Write len bytes from `buffer` to the PLC.
+ *
+ * Params:
+ *  dc = A daveConnection
+ *  area = Denotes whether the data comes from FLAGS, DATA BLOCKS,  INPUTS or OUTPUTS. The writing of other data   like timers and counters is not supported.
+ *  start = determines the first byte
+ *  DB = The number of the data block to be used. Set it to zero   for other area types.
+ *  len = Number of bytes to write
+ *  buffer = Pointer to a memory block.
+ */
 int daveWriteBytes(daveConnection* dc, int area, int DB, int start, int len, void* buffer);
 
 int daveReadPLCTime(daveConnection* dc);
-// ---------
 
 /**
  * Get time in seconds from current read position
