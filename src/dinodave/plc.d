@@ -18,6 +18,7 @@ import dinodave.helper;
 interface IPlc {
    void openConnection(int slot);
    void closeConnection();
+
    /**
     * Reads a sequence of bytes from PLC memory.
     *
@@ -122,14 +123,15 @@ class IsoTcp : IPlc {
     * Reads a sequence of bytes from PLC memory.
     *
     * Params:
-    *    DB = The number of a data block
-    *    start = The address of the first byte in the block.
-    *    length = The number of bytes to read.
+    *  DB = The number of a data block
+    *  start = The address of the first byte in the block.
+    *  length = The number of bytes to read.
     *
-    * Returns: The function returns 0 on success.
-    * Nonzero return codes may be passed to `strerror()` to get a textual explanation of what happened.
-    * Generally, positive error codes represent errors reported by the PLC,
-    * while negative ones represent errors detected by LIBNODAVE, e.g. no response from the PLC.
+    * Returns:
+    *  The function returns 0 on success.
+    *  Nonzero return codes may be passed to `strerror()` to get a textual explanation of what happened.
+    *  Generally, positive error codes represent errors reported by the PLC,
+    *  while negative ones represent errors detected by LIBNODAVE, e.g. no response from the PLC.
     */
    void readBytes(in int DB, in int start, in int length) {
       const(int) err = daveReadBytes(dc, daveDB, DB, start, length, null);
