@@ -3,14 +3,17 @@
  */
 module dinodave.plc;
 
+version (unittest) {
+   import unit_threaded;
+}
+
+import dinodave.helper;
+import dinodave.nodave;
 import std.conv;
 import std.datetime;
 import std.socket;
 import std.stdio;
 import std.string;
-
-import dinodave.nodave;
-import dinodave.helper;
 
 /**
  * Representing the physical connection to a PLC.
@@ -27,13 +30,10 @@ interface IPlc {
     *  start = The address of the first byte in the block.
     *  length = The number of bytes to read.
     *
-    *
-    * Returns: The function returns 0 on success.
-    * Nonzero return codes may be passed to daveStrerror() to get a textual explanation of what happened.
-    * Generally, positive error codes represent errors reported by the PLC,
-    * while negative ones represent errors detected by LIBNODAVE, e.g. no response from the PLC.
     */
    void readBytes(in int DB, in int start, in int length);
+
+   ubyte[] readManyBytes(in int DB, in int start, in int length);
    ///
    byte getS8();
    ///
@@ -127,17 +127,48 @@ class IsoTcp : IPlc {
     *  start = The address of the first byte in the block.
     *  length = The number of bytes to read.
     *
-    * Returns:
-    *  The function returns 0 on success.
-    *  Nonzero return codes may be passed to `strerror()` to get a textual explanation of what happened.
-    *  Generally, positive error codes represent errors reported by the PLC,
-    *  while negative ones represent errors detected by LIBNODAVE, e.g. no response from the PLC.
+    * Throws: `NodaveException`
     */
-   void readBytes(in int DB, in int start, in int length) {
+   void readBytes(in int DB, in int start, in int length)
+   in {
+      assert(DB >= 0, "DB must be positive or zero");
+      assert(start >= 0, "Start must be positive or zero");
+      assert(length > 0, "Length must be positive");
+   }
+   do {
       const(int) err = daveReadBytes(dc, daveDB, DB, start, length, null);
       if (err != 0) {
          throw new NodaveException(err);
       }
+   }
+
+   /**
+    * Reads a sequence of bytes from PLC memory.
+    *
+    * Params:
+    *  DB = The number of a data block
+    *  start = The address of the first byte in the block.
+    *  length = The number of bytes to read.
+    *
+    * Returns:
+    *  an ubyte array
+    *
+    * Throws: `NodaveException`
+    */
+   ubyte[] readManyBytes(in int DB, in int start, in int length)
+   in {
+      assert(DB >= 0, "DB must be positive or zero");
+      assert(start >= 0, "Start must be positive or zero");
+      assert(length > 0, "Length must be positive");
+   }
+   do {
+      ubyte[] buffer;
+      const(int) err = daveReadBytes(dc, daveDB, DB, start, length, buffer.ptr);
+      if (err != 0) {
+         throw new NodaveException(err);
+      }
+
+      return buffer;
    }
 
    byte getS8() {
@@ -212,11 +243,14 @@ class IsoTcp : IPlc {
 
    /**
     * Write a sequence of bytes from a buffer to PLC memory.
+    *
     * Params:
-    * DB = The number of a data block
-    * start = The address of the first byte in the block.
-    * length = The number of bytes to write.
-    * buffer = Buffer to write.
+    *  DB = The number of a data block
+    *  start = The address of the first byte in the block.
+    *  length = The number of bytes to write.
+    *  buffer = Buffer to write.
+    *
+    * Throws: `NodaveException`
     */
    void writeBytes(int DB, int start, int length, ubyte[] buffer) {
       int res = daveWriteBytes(dc, daveDB, DB, start, length, buffer.ptr);
@@ -259,12 +293,23 @@ class IsoTcp : IPlc {
 class NodaveException : Exception {
    this(int errNo) {
       string message = strerror(errNo);
+      _errNo = errNo;
+
       this(message);
    }
+
+   private int _errNo;
+   int errNo() { return _errNo; }
 
    this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
       super(message, file, line, next);
    }
+}
+
+unittest {
+   auto ex = new NodaveException(6);
+   ex.errNo.shouldEqual(6);
+   ex.msg.shouldEqual("the CPU does not support reading a bit block of length<>1");
 }
 
 /**

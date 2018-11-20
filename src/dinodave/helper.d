@@ -164,15 +164,19 @@ unittest {
  * Get error code description.
  *
  * Params:
- *  code = error code
+ *  code = Error code
  *
  * Returns:
- *  description of error.
+ *  Description of error.
  *  Generally, positive error codes represent errors reported by the PLC,
  *  while negative ones represent errors detected by LIBNODAVE, e.g. no response from the PLC.
  */
 string strerror(int code) {
    return to!(string)(daveStrerror(code));
+}
+
+unittest {
+   (6).strerror.shouldEqual("the CPU does not support reading a bit block of length<>1");
 }
 
 /**
@@ -182,7 +186,7 @@ string strerror(int code) {
  *  buffer = Buffer that contains chars
  *
  * Returns:
- *  A string. Converts $(I printables) bytes from buffer to char until it finds a null char.
+ *  A string. Converts $(I printables) bytes from buffer to char until it finds a null char. (NT means NullTerminated)
  *
  * See_Also: `isPrintable`
  */
@@ -249,6 +253,7 @@ unittest {
    [0x00, 0x41, 0x1a, 0x42, 0x1B, 0x43, 0x1C].getFixString(0).shouldEqual("");
    [0x00, 0x1a, 0x1B, 0x1C].getFixString(5).shouldEqual("");
 }
+
 
 /**
  * Takes a ubyte c and determines if it represents a printable char.
