@@ -162,13 +162,13 @@ class IsoTcp : IPlc {
       assert(length > 0, "Length must be positive");
    }
    do {
-      ubyte[] buffer;
-      const(int) err = daveReadBytes(dc, daveDB, DB, start, length, buffer.ptr);
+      ubyte[] buffer = new ubyte[](1024);
+      const(int) err = daveReadManyBytes(dc, daveDB, DB, start, length, buffer.ptr);
       if (err != 0) {
          throw new NodaveException(err);
       }
 
-      return buffer;
+      return buffer[0 .. length];
    }
 
    byte getS8() {

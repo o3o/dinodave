@@ -13,3 +13,5 @@ examples/float/libnodave.dll
 examples/read_write/libnodave.dll
 examples/read_write/read_write
 docs
+docs.json
+docs
