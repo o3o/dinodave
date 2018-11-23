@@ -271,3 +271,54 @@ unittest {
    (0x00).isPrintable.shouldBeFalse;
    (0x7E).isPrintable.shouldBeTrue;
 }
+
+/**
+ * Convert a string into buffer
+ */
+ubyte[] getBuffer(string s) {
+  return cast(ubyte[])s;
+}
+unittest {
+    ubyte[] r = "unogatto".getBuffer;
+    r.length.shouldEqual(8);
+    r.shouldEqual( [0x75, 0x6e, 0x6f, 0x67, 0x61, 0x74, 0x74, 0x6f]);
+    "".getBuffer.length.shouldEqual(0);
+}
+
+/**
+ * Convert a string into a fixed length buffer
+ */
+ubyte[] getFixBuffer(string s, uint maxLength) {
+   import std.range : take;
+   import std.array : array;
+   ubyte[] tmp;
+   tmp.length = maxLength;
+   return (s.getBuffer ~ tmp).take(maxLength).array;
+}
+
+///
+unittest {
+    ubyte[] r = "unogatto".getFixBuffer(3);
+    r.length.shouldEqual(3);
+    r.shouldEqual( [0x75, 0x6e, 0x6f]);
+    "".getFixBuffer(3).length.shouldEqual(3);
+
+    r = "unogatto".getFixBuffer(10);
+    r.length.shouldEqual(10);
+    r.shouldEqual( [0x75, 0x6e, 0x6f, 0x67, 0x61, 0x74, 0x74, 0x6f, 0x0 , 0x0]);
+}
+
+/**
+ * Convert a string into null terminated buffer
+ */
+ubyte[] getNTBuffer(string s) {
+   return s.getBuffer ~ 0;
+}
+
+unittest {
+    ubyte[] r = "unogatto".getNTBuffer;
+    r.length.shouldEqual(9);
+    r.shouldEqual( [0x75, 0x6e, 0x6f, 0x67, 0x61, 0x74, 0x74, 0x6f, 0x0]);
+    "".getNTBuffer.length.shouldEqual(1);
+}
+
