@@ -1,0 +1,7 @@
+name "read_string"
+description "dinodave read string example"
+authors "Orfeo Da Viá"
+
+copyright "Copyright © 2018, o3o"
+license "LGPL v3.0.0"
+dependency "dinodave" path="../../"

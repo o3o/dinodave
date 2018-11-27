@@ -8,6 +8,7 @@ version (unittest) {
 }
 
 import dinodave.nodave;
+import dinodave.plc : IPlc;
 import std.conv;
 import std.exception;
 
@@ -254,7 +255,6 @@ unittest {
    [0x00, 0x1a, 0x1B, 0x1C].getFixString(5).shouldEqual("");
 }
 
-
 /**
  * Takes a ubyte c and determines if it represents a printable char.
  */
@@ -276,13 +276,14 @@ unittest {
  * Convert a string into buffer
  */
 ubyte[] getBuffer(string s) {
-  return cast(ubyte[])s;
+   return cast(ubyte[])s;
 }
+
 unittest {
-    ubyte[] r = "unogatto".getBuffer;
-    r.length.shouldEqual(8);
-    r.shouldEqual( [0x75, 0x6e, 0x6f, 0x67, 0x61, 0x74, 0x74, 0x6f]);
-    "".getBuffer.length.shouldEqual(0);
+   ubyte[] r = "unogatto".getBuffer;
+   r.length.shouldEqual(8);
+   r.shouldEqual([0x75, 0x6e, 0x6f, 0x67, 0x61, 0x74, 0x74, 0x6f]);
+   "".getBuffer.length.shouldEqual(0);
 }
 
 /**
@@ -291,6 +292,7 @@ unittest {
 ubyte[] getFixBuffer(string s, uint maxLength) {
    import std.range : take;
    import std.array : array;
+
    ubyte[] tmp;
    tmp.length = maxLength;
    return (s.getBuffer ~ tmp).take(maxLength).array;
@@ -298,14 +300,14 @@ ubyte[] getFixBuffer(string s, uint maxLength) {
 
 ///
 unittest {
-    ubyte[] r = "unogatto".getFixBuffer(3);
-    r.length.shouldEqual(3);
-    r.shouldEqual( [0x75, 0x6e, 0x6f]);
-    "".getFixBuffer(3).length.shouldEqual(3);
+   ubyte[] r = "unogatto".getFixBuffer(3);
+   r.length.shouldEqual(3);
+   r.shouldEqual([0x75, 0x6e, 0x6f]);
+   "".getFixBuffer(3).length.shouldEqual(3);
 
-    r = "unogatto".getFixBuffer(10);
-    r.length.shouldEqual(10);
-    r.shouldEqual( [0x75, 0x6e, 0x6f, 0x67, 0x61, 0x74, 0x74, 0x6f, 0x0 , 0x0]);
+   r = "unogatto".getFixBuffer(10);
+   r.length.shouldEqual(10);
+   r.shouldEqual([0x75, 0x6e, 0x6f, 0x67, 0x61, 0x74, 0x74, 0x6f, 0x0, 0x0]);
 }
 
 /**
@@ -315,10 +317,30 @@ ubyte[] getNTBuffer(string s) {
    return s.getBuffer ~ 0;
 }
 
+///
 unittest {
-    ubyte[] r = "unogatto".getNTBuffer;
-    r.length.shouldEqual(9);
-    r.shouldEqual( [0x75, 0x6e, 0x6f, 0x67, 0x61, 0x74, 0x74, 0x6f, 0x0]);
-    "".getNTBuffer.length.shouldEqual(1);
+   ubyte[] r = "unogatto".getNTBuffer;
+   r.length.shouldEqual(9);
+   r.shouldEqual([0x75, 0x6e, 0x6f, 0x67, 0x61, 0x74, 0x74, 0x6f, 0x0]);
+   "".getNTBuffer.length.shouldEqual(1);
 }
 
+/**
+ * Read an ubyte array.
+ *
+ * Params:
+ *  plc = Phisical plc
+ *  length = Number of bytes to read
+ */
+ubyte[] getU8Array(IPlc plc, int length)
+in {
+   assert(plc !is null);
+   assert(length > 0);
+}
+do {
+   ubyte[] buf;
+   foreach (i; 0 .. length) {
+      buf ~= plc.getU8;
+   }
+   return buf;
+}
