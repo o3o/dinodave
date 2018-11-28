@@ -1,11 +1,10 @@
 module tests.helper;
 
+import dinodave.helper;
 import std.stdio;
 import unit_threaded;
 
-import dinodave;
-
-@UnitTest void put8_should_set_byte() {
+@UnitTest void put8ShouldSetByte() {
    ubyte[] a = [1, 2, 3, 4];
    a.put8(50);
    a.shouldEqual([50, 2, 3, 4]);
@@ -13,7 +12,7 @@ import dinodave;
    a.shouldEqual([51, 2, 3, 4]);
 }
 
-@UnitTest void put8at_should_set_byte_at_position() {
+@UnitTest void put8atShouldSetByteAtPosition() {
    ubyte[] a = [1, 2, 3, 4];
    a.put8At(0, 50);
    a.shouldEqual([50, 2, 3, 4]);
@@ -29,7 +28,9 @@ import dinodave;
    //writeln(b);
 }
 
-@UnitTest void daveput8at_should_set_byte_at_position() {
+@UnitTest void daveput8atShouldSetByteAtPosition() {
+   import dinodave.nodave : davePut8At;
+
    ubyte[] a = [1, 2, 3, 4];
    davePut8At(a.ptr, 0, 50);
    a.shouldEqual([50, 2, 3, 4]);
@@ -85,6 +86,8 @@ void testPut8() {
 }
 
 void testGetU8Array() {
+   import dinodave.plc : IPlc;
+
    auto m = mock!IPlc;
    m.returnValue!"getU8"(cast(ubyte)0x41, cast(ubyte)0x42, cast(ubyte)0x43);
    ubyte[] buf = getU8Array(m, 3);

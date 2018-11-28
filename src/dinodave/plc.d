@@ -14,6 +14,7 @@ import std.datetime;
 import std.socket;
 import std.stdio;
 import std.string;
+import std.experimental.logger;
 
 /**
  * Representing the physical connection to a PLC.
@@ -108,7 +109,6 @@ class IsoTcp : IPlc {
             throw new NodaveException(
                   "Couldn't open TCP port. Please make sure a CP is connected and the IP address is ok.");
          }
-
       } catch (Exception e) {
          throw new NodaveException("NoDave generic exception:" ~ e.msg);
       }
@@ -138,7 +138,7 @@ class IsoTcp : IPlc {
    do {
       const(int) err = daveReadBytes(dc, daveDB, DB, start, length, null);
       if (err != 0) {
-         throw new NodaveException(err);
+         throw new NodaveReadException(err, DB, start, length);
       }
    }
 
@@ -298,13 +298,47 @@ class NodaveException : Exception {
       this(message);
    }
 
-   private int _errNo;
-   int errNo() { return _errNo; }
-
    this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
       super(message, file, line, next);
    }
+
+   private int _errNo;
+   int errNo() {
+      return _errNo;
+   }
 }
+/**
+ * NoDave exception
+ */
+class NodaveReadException : NodaveException {
+   this(int errNo, in int DB, in int start, in int length) {
+      _db = DB;
+      _start = start;
+      _len = length;
+      super(errNo);
+   }
+
+
+   private int _db;
+   int dataBlock() {
+      return _db;
+   }
+
+   private int _start;
+   int startAddr() {
+      return _start;
+   }
+
+   private int _len;
+   int length() {
+      return _len;
+   }
+
+}
+
+
+
+
 
 unittest {
    auto ex = new NodaveException(6);
