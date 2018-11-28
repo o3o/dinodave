@@ -136,7 +136,7 @@ ubyte fromBCD(ubyte value) {
 }
 
 //ditto
-ushort fromBCD(ushort bcd)
+ushort fromBCD(ushort bcd) pure
 in {
    enum ushort MAX_VALUE = 0x9999;
    enum ushort MIN_VALUE = 0;
@@ -258,7 +258,7 @@ unittest {
 /**
  * Takes a ubyte c and determines if it represents a printable char.
  */
-bool isPrintable(ubyte c) {
+bool isPrintable(in ubyte c) pure {
    enum SPACE = 0x20;
    enum DEL = 0x7F;
 
