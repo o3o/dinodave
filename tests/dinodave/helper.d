@@ -1,4 +1,4 @@
-module tests.helper;
+module tests.dinodave.helper;
 
 import dinodave.helper;
 import std.stdio;
@@ -83,6 +83,21 @@ void testPut8() {
    buf.length.shouldEqual(3);
    put8(buf, 0xFF);
    writeln("e", buf[0]);
+}
+
+void testPutFloatAt() {
+   ubyte[] buf = new ubyte[](16);
+   buf.putFloatAt(0, 42.);
+   buf.putFloatAt(4, 1964.);
+   buf.putFloatAt(8, 19.64);
+   buf.putFloatAt(12, 3.1415);
+   buf.length.shouldEqual(16);
+   buf.shouldEqual([0x42, 0x28, 0x0, 0x0, //42
+         0x44, 0xf5, 0x80, 0x0, //1964
+         0x41, 0x9d,
+         0x1e, 0xb8, //19.64
+         0x40, 0x49, 0x0e, 0x56, //3.1415
+         ]);
 }
 
 void testGetU8Array() {

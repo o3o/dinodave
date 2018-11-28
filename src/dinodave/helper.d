@@ -37,6 +37,8 @@ void put16(ubyte[] buffer, in int value) {
 /**
  * Put four bytes (a double word) into buffer.
  *
+ * `put32` always puts the int in the first four bytes of the buffer.
+ *
  * Params:
  *  buffer = Buffer in which put the byte
  *  value = Double word value
@@ -48,12 +50,24 @@ void put32(ubyte[] buffer, in int value) {
 /**
  * Put a float (4 bytes) into buffer.
  *
+ * `putFloat` always puts the float in the first four bytes of the buffer
+ *
  * Params:
- *  buffer = buffer in which put the byte
+ *  buffer = buffer in which put bytes
  *  value = Float value
  */
 void putFloat(ubyte[] buffer, in float value) {
    davePutFloat(buffer.ptr, value);
+}
+///
+unittest {
+   ubyte[] buf = new ubyte[](8);
+   buf.putFloat(42.);
+   buf.putFloat(1964.);
+   buf.length.shouldEqual(8);
+   buf.shouldEqual([
+         0x44, 0xf5, 0x80, 0x0,  //1964
+         0x0, 0x0, 0x0, 0x0]);  //0
 }
 
 void put8At(ubyte[] buffer, in int pos, in int value) {

@@ -15,10 +15,11 @@ configuration "library" {
 }
 
 configuration "unittest" {
-   dependency "unit-threaded" version="~>0.7.52"
-   targetType "executable"
    targetName "test-runner"
    mainSourceFile "tests/app.d"
+   targetType "executable"
    sourcePaths "tests" "src"
-   excludedSourceFiles "src/app.d"
+   dependency "unit-threaded" version="~>0.7.52"
+   preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f tests/app.d"
+   /*excludedSourceFiles "src/app.d"*/
 }

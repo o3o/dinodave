@@ -1,9 +1,9 @@
-module tests.plc;
+module tests.dinodave.plc;
 
 import dinodave;
+import std.conv;
 import std.stdio;
 import unit_threaded;
-import std.conv;
 
 @UnitTest @HiddenTest void setBitShouldWork() {
    enum string IP = "192.168.221.64";
