@@ -89,9 +89,10 @@ class IsoTcp : IPlc {
 
    private daveConnection* dc;
    private _daveOSserialType fds;
+   private TcpSocket sock;
    void openConnection(int slot) {
       try {
-         auto sock = new TcpSocket(new InternetAddress(ip, to!(ushort)(port)));
+         sock = new TcpSocket(new InternetAddress(ip, to!(ushort)(port)));
 
          fds.rfd = sock.handle;
          fds.wfd = fds.rfd;
@@ -115,8 +116,8 @@ class IsoTcp : IPlc {
    }
 
    void closeConnection() {
-      //todo verificare se e' aperta
-      //closeSocket(fds.rfd);
+      daveDisconnectPLC(dc);
+      sock.close;
    }
 
    /**

@@ -57,6 +57,41 @@ unittest {
    app.data.length.shouldEqual(8);
    app.data.shouldEqual([0x00, 0x2a, 0x07, 0xac, 0x07, 0xe2, 0x07, 0xb3,]);
 }
+unittest {
+   auto app = appender!(ubyte[]);
+   app.put16(42);
+   app.put16(1964).put16(2018);
+   app.put16(1971);
+   app.data.length.shouldEqual(8);
+   app.data.shouldEqual([0x00, 0x2a, 0x07, 0xac, 0x07, 0xe2, 0x07, 0xb3,]);
+}
+
+unittest {
+   import core.bitop: bts;
+   auto app = appender!(ubyte[]);
+   size_t r = 0;
+   size_t c = 0;
+   bts(&r, 0);
+   bts(&r, 1);
+   bts(&r, 2);
+   bts(&c, 0);
+
+   app.put8(cast(ubyte)r);
+   app.put8(cast(ubyte)c);
+   app.data.shouldEqual([0x07, 0x01]);
+}
+unittest {
+   import core.bitop: bts;
+   auto app = appender!(ubyte[]);
+   size_t r = 0;
+   bts(&r, 8);
+   bts(&r, 9);
+   bts(&r, 10);
+   bts(&r, 0);
+
+   app.put16(cast(int)r);
+   app.data.shouldEqual([0x07, 0x01]);
+}
 
 /**
  * Converts int `value` into bytes and appends it to the managed array.

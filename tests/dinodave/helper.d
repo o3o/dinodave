@@ -12,6 +12,14 @@ import unit_threaded;
    a.shouldEqual([51, 2, 3, 4]);
 }
 
+@UnitTest void put16ShouldSetTwoBytes() {
+   ubyte[] a = [0, 0];
+   a.put16(1);
+   a.shouldEqual([0, 1]);
+   a.put16(2);
+   a.shouldEqual([0, 2]);
+}
+
 @UnitTest void put8atShouldSetByteAtPosition() {
    ubyte[] a = [1, 2, 3, 4];
    a.put8At(0, 50);
