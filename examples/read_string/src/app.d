@@ -3,7 +3,7 @@ import dinodave;
 
 void main(string[] args) {
    import std.conv : to;
-   enum string IP = "192.168.128.1";
+   enum string IP = "192.168.126.1";
    string ip = IP;
    enum int SLOT = 0;
    int slot = SLOT;
@@ -39,16 +39,22 @@ private void write(IPlc s7) {
       0x45, 0x46,
       0x47, 0x48
    ];
-   s7.writeBytes(DB, 104, 8, buffer);
+   s7.writeBytes(DB, 178, 8, buffer);
+
+   s7.readBytes(DB, 178, 2);
+
+   assert(s7.getU8 == 0x41);
+   assert(s7.getU8 == 0x42);
 }
+
 private void read(IPlc s7) {
    try {
-      ubyte[] buffer = s7.readManyBytes(DB, 104, 8);
+      ubyte[] buffer = s7.readManyBytes(DB, 178, 8);
       writefln("buf len %s", buffer.length);
       writefln("%( 0x%x %)", buffer);
       writefln("%s", buffer.getFixString(8));
 
-      s7.readBytes(DB, 104, 8);
+      s7.readBytes(DB, 178, 8);
       ubyte[] buf = s7.getU8Array(8);
       writefln("%s", buffer.getFixString(8));
    } catch (NodaveException e) {
