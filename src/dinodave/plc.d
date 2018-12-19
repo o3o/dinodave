@@ -65,9 +65,14 @@ interface IPlc {
    ///
    float getFloatAt(int position);
 
-   ///
+   /**
+    * Simplified single bit set
+    */
    void setBit(in int DB, in int byteAddress, in int bitAddress);
-   ///
+
+   /**
+    * Simplified single bit clear
+    */
    void clearBit(in int DB, in int byteAddress, in int bitAddress);
 
    ///
@@ -319,7 +324,6 @@ class NodaveReadException : NodaveException {
       super(errNo);
    }
 
-
    private int _db;
    int dataBlock() {
       return _db;
@@ -336,10 +340,6 @@ class NodaveReadException : NodaveException {
    }
 
 }
-
-
-
-
 
 unittest {
    auto ex = new NodaveException(6);
