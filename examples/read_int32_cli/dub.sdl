@@ -1,0 +1,7 @@
+name "read_int32_cli"
+description "dinodave int32 read/write example"
+authors "Orfeo Da Vià"
+
+copyright "Copyright © 2017, o3o"
+license "LGPL v3.0.0"
+dependency "dinodave" path="../../"
