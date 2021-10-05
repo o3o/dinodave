@@ -3,10 +3,6 @@
  */
 module dinodave.plc;
 
-version (unittest) {
-   import unit_threaded;
-}
-
 import dinodave.helper;
 import dinodave.nodave;
 import std.conv;
@@ -25,14 +21,28 @@ interface IPlc {
 
    /**
     * Reads a sequence of bytes from PLC memory.
+    * The buffers used by readBytes() and writeBytes() will contain a copy of the PLC memory area.
+    *
+    * Params:
+    *  DB = The number of a data block
+    *  start = The address of the first byte in the block.
+    *  length = The number of bytes to read.
+    */
+   void readBytes(in int DB, in int start, in int length);
+
+   /**
+    * Reads a sequence of bytes from PLC memory.
     *
     * Params:
     *  DB = The number of a data block
     *  start = The address of the first byte in the block.
     *  length = The number of bytes to read.
     *
+    * Returns:
+    *  an ubyte array
+    *
+    * Throws: `NodaveException`
     */
-   void readBytes(in int DB, in int start, in int length);
 
    ubyte[] readManyBytes(in int DB, in int start, in int length);
    ///
@@ -105,8 +115,8 @@ class IsoTcp : IPlc {
          if (fds.rfd > 0) {
             daveInterface* di = daveNewInterface(fds, "IF1", 0, daveProtoISOTCP, daveSpeed9k);
             daveSetTimeout(di, 5_000_000);
-            enum int MPI = 0;
-            enum int RACK = 0;
+            enum int MPI = 0; //The address of the PLC (only meaningful for MPI and PPI).
+            enum int RACK = 0; // The rack the CPU is mounted in (normally 0, only meaningful for ISO over TCP).
             dc = daveNewConnection(di, MPI, RACK, slot);
             if (daveConnectPLC(dc) != 0) {
                throw new NodaveException("Couldn't connect to PLC with ip " ~ ip);
@@ -125,16 +135,6 @@ class IsoTcp : IPlc {
       sock.close;
    }
 
-   /**
-    * Reads a sequence of bytes from PLC memory.
-    *
-    * Params:
-    *  DB = The number of a data block
-    *  start = The address of the first byte in the block.
-    *  length = The number of bytes to read.
-    *
-    * Throws: `NodaveException`
-    */
    void readBytes(in int DB, in int start, in int length)
    in {
       assert(DB >= 0, "DB must be positive or zero");
@@ -148,20 +148,7 @@ class IsoTcp : IPlc {
       }
    }
 
-   /**
-    * Reads a sequence of bytes from PLC memory.
-    *
-    * Params:
-    *  DB = The number of a data block
-    *  start = The address of the first byte in the block.
-    *  length = The number of bytes to read.
-    *
-    * Returns:
-    *  an ubyte array
-    *
-    * Throws: `NodaveException`
-    */
-   ubyte[] readManyBytes(in int DB, in int start, in int length)
+  ubyte[] readManyBytes(in int DB, in int start, in int length)
    in {
       assert(DB >= 0, "DB must be positive or zero");
       assert(start >= 0, "Start must be positive or zero");
@@ -314,7 +301,7 @@ class NodaveException : Exception {
    }
 }
 /**
- * NoDave exception
+ * NoDave read exception
  */
 class NodaveReadException : NodaveException {
    this(int errNo, in int DB, in int start, in int length) {
@@ -343,8 +330,8 @@ class NodaveReadException : NodaveException {
 
 unittest {
    auto ex = new NodaveException(6);
-   ex.errNo.shouldEqual(6);
-   ex.msg.shouldEqual("the CPU does not support reading a bit block of length<>1");
+   assert(ex.errNo == 6);
+   assert(ex.msg == "the CPU does not support reading a bit block of length<>1");
 }
 
 /**

@@ -17,7 +17,7 @@ void main(string[] args) {
 
       IPlc s7 = new IsoTcp(ip);
       enum int SLOT = 0;
-      s7.openConnection(0);
+      s7.openConnection(SLOT);
       scope(exit) s7.closeConnection();
 
       float f = 19.64;
@@ -53,5 +53,4 @@ void main(string[] args) {
 
 void printFloat(string m, float f) {
    writefln("%s = %s", m, f);
-
 }

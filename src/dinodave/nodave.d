@@ -1,5 +1,5 @@
 /**
- * This module contains bindings to types and functions from the nodave C header <nodavesimple.h>.
+ * This module contains bindings to types and functions from the nodave C header $(I nodavesimple.h).
  */
 module dinodave.nodave;
 
@@ -42,7 +42,6 @@ struct _daveOSserialType {
 }
 
 struct PDU {
-   ubyte* header;
    ubyte* param;
    ubyte* data;
    ubyte* udata;
@@ -55,10 +54,12 @@ struct PDU {
 /**
  * A structure representing the physical connection to a PLC or a network of PLCs (e.g. like MPI).
  * daveInterface stores all those properties that are common to a network of PLCs:
- * - The local address used by your computer.
- * - The speed used in this network.
- * - The protocol type used in this network.
- * - A name which is used when printing out debug messages.
+ * $(LIST
+ *   * The local address used by your computer.
+ *   * The speed used in this network.
+ *   * The protocol type used in this network.
+ *   * A name which is used when printing out debug messages.
+ * )
  *
  * The structure daveInterface is created and initialized by daveNewInterface:
  *
@@ -81,9 +82,11 @@ struct _daveInterface {
 /**
  * A structure representing the physical connection to a single PLC.
  * daveConnection stores all properties that are unique to a single PLC:
- * - The MPI address of this PLC.
- * - The rack the PLC is in.
- * - The slot the PLC is in.
+ * $(LIST
+ *   * The MPI address of this PLC.
+ *   * The rack the PLC is in.
+ *   * The slot the PLC is in.
+ *   )
  */
 struct _daveConnection {
    int AnswLen;
@@ -112,7 +115,7 @@ struct daveResultSet {
    daveResult* results;
 }
 
-// helper
+// helpe
 // ---------
 int daveGetS8from(ubyte* b);
 int daveGetU8from(ubyte* b);
@@ -176,7 +179,7 @@ int daveReadBytes(daveConnection* dc, int area, int DB, int start, int len, void
  *
  * Params:
  *  dc = A daveConnection
- *  area = Denotes whether the data comes from FLAGS, DATA BLOCKS,  INPUTS or OUTPUTS. The writing of other data   like timers and counters is not supported.
+ *  area = Denotes whether the data comes from FLAGS, DATA BLOCKS,  INPUTS or OUTPUTS. The writing of other data like timers and counters is not supported.
  *  start = determines the first byte
  *  DB = The number of the data block to be used. Set it to zero   for other area types.
  *  len = Number of bytes to write

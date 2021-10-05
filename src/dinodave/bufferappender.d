@@ -1,8 +1,8 @@
+/**
+ * Implements an output range that appends data to a buffer.
+ */
 module dinodave.bufferappender;
 
-version (unittest) {
-   import unit_threaded;
-}
 
 import std.array : Appender, appender;
 
@@ -13,15 +13,15 @@ Appender!(ubyte[]) put8(Appender!(ubyte[]) app, in ubyte value) {
    app.put(value);
    return app;
 }
-
+///
 unittest {
    auto app = appender!(ubyte[]);
    app.put8(10);
    app.put8(11);
    app.put8(12);
    app.put8(13);
-   app.data.length.shouldEqual(4);
-   app.data.shouldEqual([10, 11, 12, 13]);
+   assert(app.data.length == 4);
+   assert(app.data == [10, 11, 12, 13]);
 }
 
 unittest {
@@ -32,8 +32,8 @@ unittest {
       .put8(12)
       .put8(13);
    // dfmt on
-   app.data.length.shouldEqual(4);
-   app.data.shouldEqual([10, 11, 12, 13]);
+   assert(app.data.length == 4);
+   assert(app.data == [10, 11, 12, 13]);
 }
 
 /**
@@ -47,23 +47,23 @@ Appender!(ubyte[]) put16(Appender!(ubyte[]) app, in int value) {
    app.put(buffer);
    return app;
 }
-
+///
 unittest {
    auto app = appender!(ubyte[]);
    app.put16(42);
    app.put16(1964);
    app.put16(2018);
    app.put16(1971);
-   app.data.length.shouldEqual(8);
-   app.data.shouldEqual([0x00, 0x2a, 0x07, 0xac, 0x07, 0xe2, 0x07, 0xb3,]);
+   assert(app.data.length == 8);
+   assert(app.data == [0x00, 0x2a, 0x07, 0xac, 0x07, 0xe2, 0x07, 0xb3,]);
 }
 unittest {
    auto app = appender!(ubyte[]);
    app.put16(42);
    app.put16(1964).put16(2018);
    app.put16(1971);
-   app.data.length.shouldEqual(8);
-   app.data.shouldEqual([0x00, 0x2a, 0x07, 0xac, 0x07, 0xe2, 0x07, 0xb3,]);
+   assert(app.data.length == 8);
+   assert(app.data == [0x00, 0x2a, 0x07, 0xac, 0x07, 0xe2, 0x07, 0xb3]);
 }
 
 unittest {
@@ -78,7 +78,7 @@ unittest {
 
    app.put8(cast(ubyte)r);
    app.put8(cast(ubyte)c);
-   app.data.shouldEqual([0x07, 0x01]);
+   assert(app.data == [0x07, 0x01]);
 }
 unittest {
    import core.bitop: bts;
@@ -90,7 +90,7 @@ unittest {
    bts(&r, 0);
 
    app.put16(cast(int)r);
-   app.data.shouldEqual([0x07, 0x01]);
+   assert(app.data == [0x07, 0x01]);
 }
 
 /**
@@ -110,10 +110,10 @@ unittest {
    app.put32(19641971);
    app.put32(19712004);
    app.put32(20072004);
-   app.data.length.shouldEqual(12);
+   assert(app.data.length == 12);
 
    // dfmt off
-   app.data.shouldEqual([
+   assert(app.data == [
          0x01, 0x2b, 0xb6, 0x73,
          0x01, 0x2c, 0xc8, 0x04,
          0x01, 0x32, 0x46, 0x44]);
@@ -139,9 +139,9 @@ unittest {
    app.putFloat(19.64);
    app.putFloat(3.1415);
 
-   app.data.length.shouldEqual(16);
+   assert(app.data.length == 16);
    // dfmt off
-   app.data.shouldEqual([
+   assert(app.data == [
          0x42, 0x28, 0x0, 0x0, //42
          0x44, 0xf5, 0x80, 0x0, //1964
          0x41, 0x9d, 0x1e, 0xb8, //19.64
